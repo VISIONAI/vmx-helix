@@ -366,41 +366,41 @@ function init() {
   controls.maxDistance = 6000;
   controls.addEventListener( 'change', render );
 
-  var button = document.getElementById( 'table' );
-  button.addEventListener( 'click', function ( event ) {
+  // var button = document.getElementById( 'table' );
+  // button.addEventListener( 'click', function ( event ) {
 
-    transform( targets.table, 2000 );
+  //   transform( targets.table, 2000 );
 
-  }, false );
+  // }, false );
 
-  var button = document.getElementById( 'sphere' );
-  button.addEventListener( 'click', function ( event ) {
+  // var button = document.getElementById( 'sphere' );
+  // button.addEventListener( 'click', function ( event ) {
 
-    transform( targets.sphere, 2000 );
+  //   transform( targets.sphere, 2000 );
 
-  }, false );
+  // }, false );
 
-  var button = document.getElementById( 'helix' );
-  button.addEventListener( 'click', function ( event ) {
+  // var button = document.getElementById( 'helix' );
+  // button.addEventListener( 'click', function ( event ) {
 
-    //generate_helix();
-    transform( targets.helix, 2000 );
+  //   //generate_helix();
+  //   transform( targets.helix, 2000 );
 
-  }, false );
+  // }, false );
 
-  var button = document.getElementById( 'grid' );
-  button.addEventListener( 'click', function ( event ) {
+  // var button = document.getElementById( 'grid' );
+  // button.addEventListener( 'click', function ( event ) {
 
-    transform( targets.grid, 2000 );
+  //   transform( targets.grid, 2000 );
 
-  }, false );
+  // }, false );
 
-  var button = document.getElementById( 'vmx' );
-  button.addEventListener( 'click', function ( event ) {
+  // var button = document.getElementById( 'vmx' );
+  // button.addEventListener( 'click', function ( event ) {
 
-    transform( targets.vmx, 2000 );
+  //   transform( targets.vmx, 2000 );
 
-  }, false );
+  // }, false );
 
 
   //setTimeOut
