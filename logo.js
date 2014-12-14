@@ -1,4 +1,5 @@
 var clock = new THREE.Clock();
+var helix_offset = 1;
 var table = [
   "H", "Hydrogen", "1.00794", 1, 1,
   "He", "Helium", "4.002602", 18, 1,
@@ -128,17 +129,92 @@ var objects = [];
 var targets = { table: [], sphere: [], helix:
 		[], grid: [], vmx: [] };
 
+
+
+
+//$.getJSON("http://localhost:3000/model",function(data) {
+
 // Get a listing of images from the local server
-images = images.data;
+images = data.data;
+//images = images.map(function(x){var x2 = x; x2.image = "http://localhost:3000/"+x2.image; return x2;});
 
 init();
 animate();
 
+  //console.log('data is ',data);
+//});
+
+
+/*
+var url = "http://192.168.59.3:3000/session/fb52589d-78a3-4529-bb20-27e98efc29f5/edit";
+var jjj = '{"changes":[],"settings":{"max_positives":100,"max_negatives":0,"positives_order":1,"negatives_order":-1,"learn_iterations":0}}';
+$.post(url,jjj,function(data) {
+  console.log('data is ',data);
+
+  images = data.data;
+  //images = images.map(function(x){var x2 = x; x2.image = "http://localhost:3000/"+x2.image; return x2;});
+  alert('done with post');
+  init();
+  animate();
+
+},"json");
+*/
+/*
+$.getJSON("http://localhost:3000/model",function(data) {
+// Get a listing of images from the local server
+images = data.data;
+images = images.map(function(x){var x2 = x; x2.image = "http://localhost:3000/"+x2.image; return x2;});
+
+init();
+animate();
+
+  //console.log('data is ',data);
+});
+*/
+
+function generate_helix() {
+  console.log('Generating helix');
+  targets.helix = new Array();
+  var vector = new THREE.Vector3();
+  for ( var i2 = 0, l = objects.length; i2 < l; i2 ++ ) {
+    var i = i2 + helix_offset;
+    var phi = i * 0.175 + Math.PI;
+
+    var object = new THREE.Object3D();
+
+    object.position.x = 900 * Math.sin( phi );
+    object.position.z = - ( i * 7 ) + 450;
+    object.position.y = 900 * Math.cos( phi );
+
+    //if (i == 0) {
+    //  console.log(object.position.z)
+    //}
+
+    vector.x = object.position.x * 2;
+    vector.z = object.position.z;
+    vector.y = object.position.y * 2;
+
+    object.lookAt( vector );
+
+    targets.helix.push( object );
+
+  }
+
+  transform( targets.helix, 2000 );
+  helix_offset += 1;
+
+  setTimeout(function(){
+    generate_helix();
+    
+  },3000);
+
+
+}
 
 function init() {
 
   camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
-  camera.position.z = 3000;
+  camera.position.z = 2000;
 
   scene = new THREE.Scene();
 
@@ -233,27 +309,8 @@ function init() {
 
   // helix
 
-  var vector = new THREE.Vector3();
+  
 
-  for ( var i = 0, l = objects.length; i < l; i ++ ) {
-
-    var phi = i * 0.175 + Math.PI;
-
-    var object = new THREE.Object3D();
-
-    object.position.x = 750 * Math.sin( phi );
-    object.position.y = - ( i * 7 ) + 450;
-    object.position.z = 750 * Math.cos( phi );
-
-    vector.x = object.position.x * 2;
-    vector.y = object.position.y;
-    vector.z = object.position.z * 2;
-
-    object.lookAt( vector );
-
-    targets.helix.push( object );
-
-  }
 
   // grid
 
@@ -326,6 +383,7 @@ function init() {
   var button = document.getElementById( 'helix' );
   button.addEventListener( 'click', function ( event ) {
 
+    //generate_helix();
     transform( targets.helix, 2000 );
 
   }, false );
@@ -345,8 +403,9 @@ function init() {
   }, false );
 
 
-
-  transform( targets.table, 2000 );
+  //setTimeOut
+  generate_helix();
+  
 
   //
 
@@ -357,7 +416,7 @@ function init() {
 function transform( targets, duration ) {
 
   TWEEN.removeAll();
-
+  console.log('transforming');
   for ( var i = 0; i < objects.length; i ++ ) {
 
     var object = objects[ i ];
@@ -377,6 +436,7 @@ function transform( targets, duration ) {
 
   new TWEEN.Tween( this )
     .to( {}, duration * 2 )
+    .repeat(20)
     .onUpdate( render )
     .start();
 
